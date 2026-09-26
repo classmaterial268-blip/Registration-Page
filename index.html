@@ -1,185 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .registration-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            width: 350px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        input[type="text"], input[type="password"], input[type="email"], input[type="date"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #messageDisplay {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-        }
-        #messageDisplay ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Page</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .registration-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      color: #333;
+      font-size: 1.7rem;
+    }
+
+    .form-group { margin-bottom: 15px; }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font: inherit;
+    }
+
+    input:focus {
+      outline: 3px solid #b9d7ff;
+      border-color: #2878d4;
+    }
+
+    input.invalid {
+      border-color: #b02a37;
+      background-color: #fff5f5;
+    }
+
+    .field-error {
+      min-height: 18px;
+      margin: 4px 0 0;
+      color: #b02a37;
+      font-size: 0.85rem;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover { background-color: #218838; }
+
+    #messageDisplay {
+      display: none;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    #messageDisplay ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .error {
+      display: block !important;
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .success {
+      display: block !important;
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+  </style>
 </head>
 <body>
-    <div class="registration-container">
-        <h2>Registration Page</h2>
-        <form id="registrationForm" onsubmit="return validateForm(event)">
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password">
-            </div>
-            <div class="form-group">
-                <label for="confirmPassword">Confirm password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password">
-            </div>
-            <div class="form-group">
-                <label for="email">Email id:</label>
-                <input type="email" id="email" name="email" placeholder="Enter your email">
-            </div>
-            <div class="form-group">
-                <label for="dob">Date of Birth:</label>
-                <input type="date" id="dob" name="dob">
-            </div>
-            <button type="submit">Submit</button>
-        </form>
-        <div id="messageDisplay"></div>
-    </div>
+  <main class="registration-container">
+    <h1>Registration Page</h1>
 
-    <script>
-        function validateForm(event) {
-            // Prevent the default form submission behavior to handle validation asynchronously
-            event.preventDefault();
+    <form id="registrationForm" novalidate>
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" autocomplete="username" aria-describedby="usernameError">
+        <p class="field-error" id="usernameError"></p>
+      </div>
 
-            // Accessing HTML elements using the DOM
-            var username = document.getElementById("username").value.trim();
-            var password = document.getElementById("password").value.trim();
-            var confirmPassword = document.getElementById("confirmPassword").value.trim();
-            var email = document.getElementById("email").value.trim();
-            var dob = document.getElementById("dob").value.trim();
-            var messageDisplay = document.getElementById("messageDisplay");
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="new-password" aria-describedby="passwordError">
+        <p class="field-error" id="passwordError"></p>
+      </div>
 
-            // Resetting the message display area
-            messageDisplay.innerHTML = "";
-            messageDisplay.style.display = "none";
-            messageDisplay.className = "";
-            
-            var errors = []; // Array to collect all validation errors
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" autocomplete="new-password" aria-describedby="confirmPasswordError">
+        <p class="field-error" id="confirmPasswordError"></p>
+      </div>
 
-            // Validation 1: Checking if all data fields are filled
-            if (username === "" || password === "" || confirmPassword === "" || email === "" || dob === "") {
-                errors.push("All fields are required. Please ensure that every field is completed.");
-            }
+      <div class="form-group">
+        <label for="email">Email id</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="email" aria-describedby="emailError">
+        <p class="field-error" id="emailError"></p>
+      </div>
 
-            // Validation 2: Username requires at least three characters
-            if (username !== "" && username.length < 3) {
-                errors.push("The username must contain a minimum of 3 characters.");
-            }
+      <div class="form-group">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" aria-describedby="dobError">
+        <p class="field-error" id="dobError"></p>
+      </div>
 
-            // Validation 3: Password requires a minimum of eight characters
-            if (password !== "" && password.length < 8) {
-                errors.push("The password must contain a minimum of 8 characters.");
-            }
+      <button type="submit">Submit</button>
+    </form>
 
-            // Validation 4: Checking if password and confirm password entries are matching
-            if (password !== "" && confirmPassword !== "" && password !== confirmPassword) {
-                errors.push("The passwords do not match. Please re-enter the confirm password.");
-            }
+    <div id="messageDisplay" role="status" aria-live="polite"></div>
+  </main>
 
-            // Validation 5: Checking if the data is in the correct format (Email)
-            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            if (email !== "" && !emailPattern.test(email)) {
-                errors.push("The email format is invalid. Please enter a valid email address.");
-            }
+  <script>
+    const form = document.getElementById("registrationForm");
+    const messageDisplay = document.getElementById("messageDisplay");
+    const fieldNames = ["username", "password", "confirmPassword", "email", "dob"];
 
-            // Validation 6: Date of birth prevents a future date from being entered
-            if (dob !== "") {
-                var enteredDate = new Date(dob);
-                var today = new Date();
-                today.setHours(0, 0, 0, 0); // Normalize today's date to midnight
-                if (enteredDate > today) {
-                    errors.push("The date of birth cannot be a future date.");
-                }
-            }
+    function clearMessages() {
+      messageDisplay.replaceChildren();
+      messageDisplay.className = "";
 
-            // Display logic: If errors are found, the user receives a list of corrections
-            if (errors.length > 0) {
-                var errorList = "<ul>";
-                errors.forEach(function(error) {
-                    errorList += "<li>" + error + "</li>";
-                });
-                errorList += "</ul>";
-                messageDisplay.innerHTML = errorList;
-                messageDisplay.className = "error";
-                messageDisplay.style.display = "block";
-                return false;
-            }
+      fieldNames.forEach(function (fieldName) {
+        document.getElementById(fieldName + "Error").textContent = "";
+        document.getElementById(fieldName).classList.remove("invalid");
+      });
+    }
 
-            // If all validations pass, a success message appears
-            messageDisplay.textContent = "Registration is successful! The form has been validated.";
-            messageDisplay.className = "success";
-            messageDisplay.style.display = "block";
-            return true;
+    function showFieldError(fieldName, text) {
+      document.getElementById(fieldName + "Error").textContent = text;
+      document.getElementById(fieldName).classList.add("invalid");
+    }
+
+    function showErrorList(errors) {
+      const errorList = document.createElement("ul");
+
+      errors.forEach(function (error) {
+        const listItem = document.createElement("li");
+        listItem.textContent = error;
+        errorList.appendChild(listItem);
+      });
+
+      messageDisplay.appendChild(errorList);
+      messageDisplay.className = "error";
+    }
+
+    function isAtLeastThirteen(dateString) {
+      const birthDate = new Date(dateString + "T00:00:00");
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+      const dayDifference = today.getDate() - birthDate.getDate();
+
+      if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        age--;
+      }
+
+      return age >= 13;
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      clearMessages();
+
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const email = document.getElementById("email").value.trim();
+      const dob = document.getElementById("dob").value;
+      const errors = [];
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
+
+      if (username === "") {
+        showFieldError("username", "Username is required.");
+        errors.push("Enter a username.");
+      } else if (username.length < 3) {
+        showFieldError("username", "Username must contain at least 3 characters.");
+        errors.push("Use a username with at least 3 characters.");
+      }
+
+      if (password === "") {
+        showFieldError("password", "Password is required.");
+        errors.push("Enter a password.");
+      } else if (!passwordPattern.test(password)) {
+        showFieldError("password", "Use 8 or more characters, including a letter and a number.");
+        errors.push("Use a password with at least 8 characters, one letter, and one number.");
+      }
+
+      if (confirmPassword === "") {
+        showFieldError("confirmPassword", "Please confirm your password.");
+        errors.push("Confirm the password.");
+      } else if (password !== confirmPassword) {
+        showFieldError("confirmPassword", "Passwords do not match.");
+        errors.push("Make sure the password entries match.");
+      }
+
+      if (email === "") {
+        showFieldError("email", "Email id is required.");
+        errors.push("Enter an email id.");
+      } else if (!emailPattern.test(email)) {
+        showFieldError("email", "Enter a valid email address, such as name@example.com.");
+        errors.push("Enter an email address in the correct format.");
+      }
+
+      if (dob === "") {
+        showFieldError("dob", "Date of birth is required.");
+        errors.push("Enter a date of birth.");
+      } else {
+        const enteredDate = new Date(dob + "T00:00:00");
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        if (enteredDate > today) {
+          showFieldError("dob", "Date of birth cannot be in the future.");
+          errors.push("Enter a date of birth that is not in the future.");
+        } else if (!isAtLeastThirteen(dob)) {
+          showFieldError("dob", "You must be at least 13 years old to register.");
+          errors.push("The user must be at least 13 years old to register.");
         }
-    </script>
+      }
+
+      if (errors.length > 0) {
+        showErrorList(errors);
+        return;
+      }
+
+      messageDisplay.textContent = "Registration details are valid. The form is ready to be submitted.";
+      messageDisplay.className = "success";
+    });
+  </script>
 </body>
 </html>
